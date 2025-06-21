@@ -1,20 +1,41 @@
-
-###> symfony/framework-bundle ###
-/.env.local
-/.env.local.php
-/.env.*.local
-/config/secrets/prod/prod.decrypt.private.php
-/public/bundles/
+# === Symfony Standard Directories ===
 /var/
 /vendor/
-###< symfony/framework-bundle ###
+/node_modules/
 
-###> phpunit/phpunit ###
-/phpunit.xml
-/.phpunit.cache/
-###< phpunit/phpunit ###
+# === Environment Configuration ===
+.env.local
+.env.test.local
+.env.dev.local
+.env.backup
+.env.*.local
 
-###> symfony/asset-mapper ###
-/public/assets/
-/assets/vendor/
-###< symfony/asset-mapper ###
+# === Logs and cache ===
+*.log
+*.cache
+
+# === User uploads or temp files ===
+/public/uploads/
+/tmp/
+
+# === IDEs and Editors ===
+.idea/
+.vscode/
+*.sublime*
+*.swp
+*.bak
+
+# === OS-specific ===
+.DS_Store
+Thumbs.db
+
+# === PHPUnit ===
+phpunit.xml
+phpunit.xml.dist
+/.phpunit.result.cache
+
+# === Coverage ===
+/coverage/
+
+# === Composer Lock Backup ===
+composer.lock.backup
