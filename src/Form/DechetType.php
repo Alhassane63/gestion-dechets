@@ -5,6 +5,7 @@ namespace App\Form;
 use App\Entity\Dechet;
 use App\Entity\Zone;
 use Doctrine\ORM\EntityManagerInterface;
+use App\Entity\User;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\IntegerType;
@@ -71,6 +72,9 @@ class DechetType extends AbstractType
     {
         $resolver->setDefaults([
             'data_class' => Dechet::class,
+            'citoyen' => null,
         ]);
+        
+        $resolver->setAllowedTypes('citoyen', ['null', 'App\Entity\User']);
     }
 }

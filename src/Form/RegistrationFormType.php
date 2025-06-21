@@ -92,7 +92,8 @@ class RegistrationFormType extends AbstractType
     {
         $resolver->setDefaults([
             'data_class' => User::class,
-            'role' => null, // Déclaration de l'option personnalisée
+            'csrf_protection' => false, // 🔴 Désactivation de la protection CSRF
+            'role' => null,
         ]);
 
         $resolver->setAllowedTypes('role', ['null', 'string']);

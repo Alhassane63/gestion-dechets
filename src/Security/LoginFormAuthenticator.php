@@ -41,6 +41,14 @@ class LoginFormAuthenticator extends AbstractLoginFormAuthenticator implements A
         $request->getSession()->set('security.last_username', $email);
         $password = $request->request->get('_password', '');
 
+        // On désactive la vérification CSRF si aucun token n’est fourni
+        $badges = [];
+
+        $csrfToken = $request->request->get('_csrf_token');
+        if ($csrfToken) {
+            $badges[] = new CsrfTokenBadge('authenticate', $csrfToken);
+        }
+
         return new Passport(
             new UserBadge($email, function ($userIdentifier) use ($password) {
                 $user = $this->entityManager->getRepository(User::class)->findOneBy(['email' => $userIdentifier]);
@@ -56,9 +64,7 @@ class LoginFormAuthenticator extends AbstractLoginFormAuthenticator implements A
                 return $user;
             }),
             new PasswordCredentials($password),
-            [
-                new CsrfTokenBadge('authenticate', $request->request->get('_csrf_token')),
-            ]
+            $badges
         );
     }
 

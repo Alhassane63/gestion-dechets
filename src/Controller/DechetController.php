@@ -31,6 +31,7 @@ class DechetController extends AbstractController
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
+            $dechet->setCitoyen($this->getUser()); // Set the current user as citoyen
             $entityManager->persist($dechet);
             $entityManager->flush();
             $this->addFlash('success', 'Déchet créé avec succès !');

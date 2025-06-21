@@ -71,7 +71,6 @@ class Signalement
     public function setDescription(string $description): static
     {
         $this->description = $description;
-
         return $this;
     }
 
@@ -83,7 +82,6 @@ class Signalement
     public function setLieu(string $lieu): static
     {
         $this->lieu = $lieu;
-
         return $this;
     }
 
@@ -95,7 +93,6 @@ class Signalement
     public function setDateSignalement(DateTimeInterface $dateSignalement): static
     {
         $this->dateSignalement = $dateSignalement;
-
         return $this;
     }
 
@@ -107,7 +104,6 @@ class Signalement
     public function setType(string $type): static
     {
         $this->type = $type;
-
         return $this;
     }
 
@@ -119,19 +115,76 @@ class Signalement
     public function setEtat(string $etat): static
     {
         $this->etat = $etat;
-
         return $this;
     }
 
-    public function getZone(): ?zone
+    public function getZone(): ?Zone
     {
         return $this->zone;
     }
 
-    public function setZone(?zone $zone): static
+    public function setZone(?Zone $zone): static
     {
         $this->zone = $zone;
+        return $this;
+    }
 
+    public function getPhoto(): ?string
+    {
+        return $this->photo;
+    }
+
+    public function setPhoto(?string $photo): static
+    {
+        $this->photo = $photo;
+        return $this;
+    }
+
+    // ✅ Ajout manquant : Getter et setter pour statut
+    public function getStatut(): ?string
+    {
+        return $this->statut;
+    }
+
+    public function setStatut(?string $statut): static
+    {
+        $this->statut = $statut;
+        return $this;
+    }
+
+    // ✅ Getter et setter pour citoyen
+    public function getCitoyen(): ?User
+    {
+        return $this->citoyen;
+    }
+
+    public function setCitoyen(?User $citoyen): static
+    {
+        $this->citoyen = $citoyen;
+        return $this;
+    }
+
+    // ✅ Getter et setter pour dateTraitement
+    public function getDateTraitement(): ?\DateTimeInterface
+    {
+        return $this->dateTraitement;
+    }
+
+    public function setDateTraitement(?\DateTimeInterface $dateTraitement): static
+    {
+        $this->dateTraitement = $dateTraitement;
+        return $this;
+    }
+
+    // ✅ Getter et setter pour commentaireTraitement
+    public function getCommentaireTraitement(): ?string
+    {
+        return $this->commentaireTraitement;
+    }
+
+    public function setCommentaireTraitement(?string $commentaireTraitement): static
+    {
+        $this->commentaireTraitement = $commentaireTraitement;
         return $this;
     }
 }
