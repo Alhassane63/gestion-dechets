@@ -1,0 +1,33 @@
+{% extends 'admin/base.html.twig' %}
+
+{% block title %}Filtres d'export{% endblock %}
+
+{% block body %}
+<div class="container-fluid mt-4">
+    <div class="row">
+        <div class="col-12">
+            <h2>Filtres d'export</h2>
+            <div class="card">
+                <div class="card-body">
+                    <form method="get" action="{{ path('app_export_general_pdf') }}" class="row g-3">
+                        {{ form_start(form) }}
+                        <div class="col-md-6">
+                            {{ form_row(form.periode, {'label_attr': {'class': 'form-label'}}) }}
+                        </div>
+                        <div class="col-md-3">
+                            {{ form_row(form.dateDebut, {'label_attr': {'class': 'form-label'}}) }}
+                        </div>
+                        <div class="col-md-3">
+                            {{ form_row(form.dateFin, {'label_attr': {'class': 'form-label'}}) }}
+                        </div>
+                        <div class="col-12">
+                            {{ form_row(form.exporter, {'label_attr': {'class': 'form-label'}}) }}
+                        </div>
+                        {{ form_end(form) }}
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

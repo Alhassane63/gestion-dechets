@@ -1,0 +1,90 @@
+{% extends 'collecte/base.html.twig' %}
+
+{% block body %}
+<div class="card shadow mb-4">
+    <div class="card-header py-3">
+        <h6 class="m-0 font-weight-bold text-primary">Liste des Collectes</h6>
+    </div>
+    <div class="card-body">
+        <div class="table-responsive">
+            <table class="table table-bordered" id="collectesTable" width="100%" cellspacing="0">
+                <thead>
+                    <tr>
+                        <th>Date</th>
+                        <th>Point de Collecte</th>
+                        <th>Zone</th>
+                        <th>Agent</th>
+                        <th>Statut</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for collecte in collectes %}
+                    <tr>
+                        <td>{{ collecte.dateCollecte ? collecte.dateCollecte|date('d/m/Y H:i') : 'Non planifiée' }}</td>
+                        <td>{{ collecte.pointCollecte.nom }}</td>
+                        <td>{{ collecte.zone.nom }}</td>
+                        <td>{{ collecte.agent.prenom }} {{ collecte.agent.nom }}</td>
+                        <td>
+                            <span class="badge badge-{{ collecte.getBadgeClass() }}">
+                                {{ collecte.getStatutLabel() }}
+                            </span>
+                        </td>
+                        <td>
+                            <a href="{{ path('app_collecte_show', {'id': collecte.id}) }}" class="btn btn-info btn-sm">Voir</a>
+                            {% if collecte.statut == 'planifiee' and is_granted('ROLE_AGENT') %}
+                                <button class="btn btn-success btn-sm marquer-comme-effectuee" data-id="{{ collecte.id }}">
+                                    Marquer comme effectuée
+                                </button>
+                            {% endif %}
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    // Initialisation de DataTables
+    const table = $('#collectesTable').DataTable({
+        language: {
+            url: '//cdn.datatables.net/plug-ins/1.11.5/i18n/fr-FR.json'
+        },
+        responsive: true
+    });
+
+    // Gestion du bouton "Marquer comme effectuée"
+    document.querySelectorAll('.marquer-comme-effectuee').forEach(button => {
+        button.addEventListener('click', function() {
+            const collecteId = this.dataset.id;
+            
+            if (confirm('Êtes-vous sûr de vouloir marquer cette collecte comme effectuée ?')) {
+                fetch(`/collecte/${collecteId}/marquer-comme-effectuee`, {
+                    method: 'POST',
+                    headers: {
+                        'X-Requested-With': 'XMLHttpRequest'
+                    }
+                })
+                .then(response => response.json())
+                .then(data => {
+                    if (data.success) {
+                        // Rafraîchir la table
+                        table.ajax.reload();
+                        // Afficher un message de succès
+                        alert('Collecte marquée comme effectuée avec succès !');
+                    } else {
+                        alert('Erreur lors de la mise à jour du statut de la collecte.');
+                    }
+                })
+                .catch(error => {
+                    console.error('Erreur:', error);
+                    alert('Une erreur est survenue. Veuillez réessayer.');
+                });
+            }
+        });
+    });
+});
+</script>
+{% endblock body %}

@@ -1,0 +1,58 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Gestion des Déchets{% endblock %}
+
+{% block body %}
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <h2>Déchets</h2>
+        <a href="{{ path('app_dechet_new') }}" class="btn btn-primary">
+            <i class="bi bi-plus-circle me-2"></i> Nouveau Déchet
+        </a>
+    </div>
+
+    <div class="table-responsive">
+        <table class="table table-striped">
+            <thead class="table-dark">
+                <tr>
+                    <th>Type</th>
+                    <th>Description</th>
+                    <th>Quantité</th>	h>
+                    <th>Zone</th>
+                    <th>Date</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+            {% for dechet in dechets %}
+                <tr>
+                    <td>{{ dechet.type }}</td>
+                    <td>{{ dechet.description|default('')|slice(0, 50) }}{% if dechet.description|length > 50 %}...{% endif %}</td>
+                    <td>{{ dechet.quantite }} kg</td>
+                    <td>{{ dechet.zone.nom }}</td>
+                    <td>{{ dechet.date|date('d/m/Y') }}</td>
+                    <td>
+                        <div class="btn-group">
+                            <a href="{{ path('app_dechet_show', {'id': dechet.id}) }}" class="btn btn-sm btn-info">
+                                <i class="bi bi-eye"></i>
+                            </a>
+                            <a href="{{ path('app_dechet_edit', {'id': dechet.id}) }}" class="btn btn-sm btn-warning">
+                                <i class="bi bi-pencil"></i>
+                            </a>
+                            <form action="{{ path('app_dechet_delete', {'id': dechet.id}) }}" method="post" class="d-inline">
+                                <button type="submit" class="btn btn-sm btn-danger" onclick="return confirm('Êtes-vous sûr de vouloir supprimer ce déchet ?')">
+                                    <i class="bi bi-trash"></i>
+                                </button>
+                                <input type="hidden" name="_token" value="{{ csrf_token('delete' ~ dechet.id) }}">
+                            </form>
+                        </div>
+                    </td>
+                </tr>
+            {% else %}
+                <tr>
+                    <td colspan="6" class="text-center">Aucun déchet trouvé</td>
+                </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+    </div>
+{% endblock %}

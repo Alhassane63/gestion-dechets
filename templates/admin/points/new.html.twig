@@ -1,0 +1,59 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Nouveau Point de Collecte{% endblock %}
+
+{% block body %}
+<div class="container-fluid">
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <h1>Nouveau Point de Collecte</h1>
+        <a href="{{ path('app_admin_points') }}" class="btn btn-secondary">Retour à la liste</a>
+    </div>
+
+    <div class="card shadow mb-4">
+        <div class="card-body">
+            {{ form_start(form) }}
+            <div class="form-group">
+                {{ form_label(form.adresse) }}
+                {{ form_widget(form.adresse, {'attr': {'class': 'form-control'}}) }}
+                {{ form_errors(form.adresse) }}
+            </div>
+
+            <div class="form-group">
+                {{ form_label(form.typeDechets) }}
+                {{ form_widget(form.typeDechets, {'attr': {'class': 'form-control'}}) }}
+                {{ form_errors(form.typeDechets) }}
+            </div>
+
+            <div class="form-group">
+                {{ form_label(form.reference) }}
+                {{ form_widget(form.reference, {'attr': {'class': 'form-control'}}) }}
+                {{ form_errors(form.reference) }}
+            </div>
+
+            <div class="form-group">
+                {{ form_label(form.description) }}
+                {{ form_widget(form.description, {'attr': {'class': 'form-control', 'rows': '3'}}) }}
+                {{ form_errors(form.description) }}
+            </div>
+
+            <div class="form-row">
+                <div class="form-group col-md-6">
+                    {{ form_label(form.latitude) }}
+                    {{ form_widget(form.latitude, {'attr': {'class': 'form-control'}}) }}
+                    {{ form_errors(form.latitude) }}
+                </div>
+                <div class="form-group col-md-6">
+                    {{ form_label(form.longitude) }}
+                    {{ form_widget(form.longitude, {'attr': {'class': 'form-control'}}) }}
+                    {{ form_errors(form.longitude) }}
+                </div>
+            </div>
+
+            <div class="form-group">
+                <button type="submit" class="btn btn-primary">Enregistrer</button>
+            </div>
+            {{ form_end(form) }}
+        </div>
+    </div>
+</div>
+{% endblock %}

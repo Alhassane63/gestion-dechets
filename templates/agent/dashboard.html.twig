@@ -1,0 +1,118 @@
+{% extends 'agent/base.html.twig' %}
+
+{% block agent_content %}
+<div class="row">
+    <!-- Tournées du jour -->
+    <div class="col-md-6">
+        <div class="card mb-4">
+            <div class="card-header">
+                <h5 class="mb-0">Tournées du jour</h5>
+            </div>
+            <div class="card-body">
+                <div class="table-responsive">
+                    <table class="table table-striped">
+                        <thead>
+                            <tr>
+                                <th>Nom</th>
+                                <th>Zone</th>
+                                <th>Heure</th>
+                                <th>Statut</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for tournee in tournées %}
+                            <tr>
+                                <td>{{ tournee.nom }}</td>
+                                <td>{{ tournee.zone }}</td>
+                                <td>{{ tournee.heureDebut|date('H:i') }} - {{ tournee.heureFin|date('H:i') }}</td>
+                                <td><span class="badge bg-{{ tournee.active ? 'success' : 'danger' }}">{{ tournee.active ? 'Active' : 'Inactive' }}</span></td>
+                                <td>
+                                    <a href="{{ path('app_agent_tournee_show', {'id': tournee.id}) }}" class="btn btn-sm btn-primary">
+                                        <i class="fas fa-eye"></i>
+                                    </a>
+                                </td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Points de collecte à traiter -->
+    <div class="col-md-6">
+        <div class="card mb-4">
+            <div class="card-header">
+                <h5 class="mb-0">Points de collecte à traiter</h5>
+            </div>
+            <div class="card-body">
+                <div class="table-responsive">
+                    <table class="table table-striped">
+                        <thead>
+                            <tr>
+                                <th>Adresse</th>
+                                <th>Type de déchets</th>
+                                <th>Tournée</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for point in points_a_traiter %}
+                            <tr>
+                                <td>{{ point.adresse }}</td>
+                                <td>{{ point.typeDechets }}</td>
+                                <td>{{ point.tournee.nom }}</td>
+                                <td>
+                                    <a href="{{ path('app_agent_collecte', {'id': point.id}) }}" class="btn btn-sm btn-success">
+                                        <i class="fas fa-check"></i> Collecter
+                                    </a>
+                                </td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Historique des collectes -->
+<div class="card">
+    <div class="card-header">
+        <h5 class="mb-0">Historique des collectes</h5>
+    </div>
+    <div class="card-body">
+        <div class="table-responsive">
+            <table class="table table-striped">
+                <thead>
+                    <tr>
+                        <th>Date</th>
+                        <th>Point de collecte</th>
+                        <th>Type de déchets</th>
+                        <th>Statut</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for collecte in historique_collectes %}
+                    <tr>
+                        <td>{{ collecte.dateCollecte|date('d/m/Y H:i') }}</td>
+                        <td>{{ collecte.pointCollecte.adresse }}</td>
+                        <td>{{ collecte.pointCollecte.typeDechets }}</td>
+                        <td><span class="badge bg-{{ collecte.statut == 'COLLECTE' ? 'success' : 'danger' }}">{{ collecte.statut }}</span></td>
+                        <td>
+                            <a href="{{ path('app_agent_collecte_show', {'id': collecte.id}) }}" class="btn btn-sm btn-primary">
+                                <i class="fas fa-eye"></i>
+                            </a>
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+{% endblock %}

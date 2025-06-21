@@ -1,0 +1,220 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Tableau de bord - Agent{% endblock %}
+
+{% block body %}
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-md-12">
+            <h1 class="mt-4">Tableau de bord Agent</h1>
+            <ol class="breadcrumb mb-4">
+                <li class="breadcrumb-item active">Tableau de bord</li>
+            </ol>
+            
+            <!-- Cartes principales -->
+            <div class="row">
+                <div class="col-xl-3 col-md-6">
+                    <div class="card bg-primary text-white mb-4">
+                        <div class="card-body">
+                            <div class="d-flex justify-content-between align-items-center">
+                                <div>
+                                    <h5 class="text-white mb-0">{{ stats.total_collectes }}</h5>
+                                    <p class="text-white-50 mb-0">Collectes</p>
+                                </div>
+                                <div class="h1 text-white-50">
+                                    <i class="fas fa-truck"></i>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="card-footer d-flex align-items-center justify-content-between">
+                            <a class="small text-white stretched-link" href="{{ path('app_collecte_index') }}">Voir toutes les collectes</a>
+                            <div class="small text-white"><i class="fas fa-angle-right"></i></div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-xl-3 col-md-6">
+                    <div class="card bg-warning text-white mb-4">
+                        <div class="card-body">
+                            <div class="d-flex justify-content-between align-items-center">
+                                <div>
+                                    <h5 class="text-white mb-0">{{ stats.total_points }}</h5>
+                                    <p class="text-white-50 mb-0">Points de collecte</p>
+                                </div>
+                                <div class="h1 text-white-50">
+                                    <i class="fas fa-map-marker-alt"></i>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="card-footer d-flex align-items-center justify-content-between">
+                            <a class="small text-white stretched-link" href="{{ path('app_admin_points') }}">Voir les points</a>
+                            <div class="small text-white"><i class="fas fa-angle-right"></i></div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-xl-3 col-md-6">
+                    <div class="card bg-success text-white mb-4">
+                        <div class="card-body">
+                            <div class="d-flex justify-content-between align-items-center">
+                                <div>
+                                    <h5 class="text-white mb-0">{{ stats.collectes_en_attente }}</h5>
+                                    <p class="text-white-50 mb-0">En attente</p>
+                                </div>
+                                <div class="h1 text-white-50">
+                                    <i class="fas fa-clock"></i>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="card-footer d-flex align-items-center justify-content-between">
+                            <a class="small text-white stretched-link" href="{{ path('app_collecte_list') }}">Voir les détails</a>
+                            <div class="small text-white"><i class="fas fa-angle-right"></i></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Carte et statistiques -->
+            <div class="row">
+                <div class="col-xl-8">
+                    <div class="card mb-4">
+                        <div class="card-header">
+                            <i class="fas fa-map-marked-alt me-1"></i>
+                            Points de collecte
+                        </div>
+                        <div class="card-body">
+                            <div id="map" style="height: 400px;"></div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-xl-4">
+                    <div class="card mb-4">
+                        <div class="card-header">
+                            <i class="fas fa-chart-bar me-1"></i>
+                            Statistiques
+                        </div>
+                        <div class="card-body">
+                            <div class="list-group">
+                                <div class="list-group-item">
+                                    <div class="d-flex w-100 justify-content-between">
+                                        <h6 class="mb-1">Collectes effectuées ce mois</h6>
+                                        <span class="badge bg-success">{{ stats.collectes_effectuees }}</span>
+                                    </div>
+                                </div>
+                                <div class="list-group-item">
+                                    <div class="d-flex w-100 justify-content-between">
+                                        <h6 class="mb-1">Collectes en retard</h6>
+                                        <span class="badge bg-danger">{{ stats.collectes_en_retard }}</span>
+                                    </div>
+                                </div>
+                                <div class="list-group-item">
+                                    <div class="d-flex w-100 justify-content-between">
+                                        <h6 class="mb-1">Points de collecte dans ma zone</h6>
+                                        <span class="badge bg-primary">{{ stats.points_dans_zone }}</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Mes tâches -->
+            <div class="row">
+                <div class="col-xl-12">
+                    <div class="card mb-4">
+                        <div class="card-header">
+                            <i class="fas fa-list me-1"></i>
+                            Mes Tâches
+                        </div>
+                        <div class="card-body">
+                            <div class="table-responsive">
+                                <table class="table table-hover">
+                                    <thead>
+                                        <tr>
+                                            <th>Type de déchet</th>
+                                            <th>Adresse</th>
+                                            <th>Date</th>
+                                            <th>Statut</th>
+                                            <th>Actions</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        {% for collecte in stats.collectes %}
+                                        <tr>
+                                            <td>{{ collecte.typeDechets }}</td>
+                                            <td>{{ collecte.pointCollecte.adresse }}</td>
+                                            <td>{{ collecte.dateCollecte|date('d/m/Y H:i') }}</td>
+                                            <td>
+                                                <span class="badge bg-{{ collecte.statut == 'en_attente' ? 'warning' : (collecte.statut == 'effectuee' ? 'success' : 'danger') }}">
+                                                    {{ collecte.statut }}
+                                                </span>
+                                            </td>
+                                            <td>
+                                                <a href="{{ path('app_collecte_show', {'id': collecte.id}) }}" class="btn btn-sm btn-primary">
+                                                    <i class="fas fa-eye"></i>
+                                                </a>
+                                                {% if collecte.statut == 'en_attente' %}
+                                                <button type="button" class="btn btn-sm btn-success" onclick="marquerCommeEffectuee({{ collecte.id }})">
+                                                    <i class="fas fa-check"></i>
+                                                </button>
+                                                {% endif %}
+                                            </td>
+                                        </tr>
+                                        {% else %}
+                                        <tr>
+                                            <td colspan="5" class="text-center text-muted">Aucune tâche à effectuer</td>
+                                        </tr>
+                                        {% endfor %}
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}
+
+{% block javascripts %}
+{{ parent() }}
+<script>
+    // Configuration de la carte
+    mapboxgl.accessToken = 'YOUR_MAPBOX_ACCESS_TOKEN';
+    var map = new mapboxgl.Map({
+        container: 'map',
+        style: 'mapbox://styles/mapbox/streets-v11',
+        center: [0, 0],
+        zoom: 2
+    });
+
+    // Ajouter le contrôle de navigation
+    map.addControl(new mapboxgl.NavigationControl());
+
+    // Ajouter les points de collecte
+    {% for point in stats.points %}
+    var marker = new mapboxgl.Marker()
+        .setLngLat([{{ point.longitude }}, {{ point.latitude }}])
+        .addTo(map);
+    {% endfor %}
+
+    // Fonction pour marquer une collecte comme effectuée
+    function marquerCommeEffectuee(collecteId) {
+        if (confirm('Êtes-vous sûr de vouloir marquer cette collecte comme effectuée ?')) {
+            fetch('/collecte/' + collecteId + '/marquer-comme-effectuee', {
+                method: 'POST',
+                headers: {
+                    'X-Requested-With': 'XMLHttpRequest'
+                }
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    window.location.reload();
+                } else {
+                    alert('Erreur lors de la mise à jour du statut');
+                }
+            });
+        }
+    }
+</script>
+{% endblock %}

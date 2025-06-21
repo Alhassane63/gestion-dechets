@@ -1,0 +1,170 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Rapport - Statistiques par Zone{% endblock %}
+
+{% block body %}
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>Rapport - Statistiques par Zone</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+        }
+        .header {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+        .header h1 {
+            font-size: 24px;
+            margin-bottom: 10px;
+        }
+        .header h2 {
+            font-size: 16px;
+            color: #666;
+        }
+        .section {
+            margin-bottom: 30px;
+        }
+        .section h3 {
+            color: #333;
+            margin-bottom: 15px;
+        }
+        .table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 15px 0;
+        }
+        .table th, .table td {
+            border: 1px solid #ddd;
+            padding: 8px;
+            text-align: left;
+        }
+        .table th {
+            background-color: #f4f4f4;
+        }
+        .zone-card {
+            background-color: #f8f9fa;
+            padding: 15px;
+            margin-bottom: 15px;
+            border-radius: 4px;
+        }
+        .zone-card h4 {
+            margin-top: 0;
+            color: #2c3e50;
+        }
+        .zone-card .stats {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            gap: 15px;
+            margin-top: 15px;
+        }
+        .zone-card .stat-item {
+            background-color: white;
+            padding: 10px;
+            border-radius: 4px;
+            text-align: center;
+        }
+        .zone-card .stat-item .value {
+            font-size: 24px;
+            font-weight: bold;
+            color: #2c3e50;
+        }
+        .zone-card .stat-item .label {
+            color: #666;
+            font-size: 12px;
+        }
+        .map {
+            margin: 20px 0;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            padding: 10px;
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <h1>Rapport - Statistiques par Zone</h1>
+        <h2>Période : {{ periodeDebut|date('d/m/Y') }} - {{ periodeFin|date('d/m/Y') }}</h2>
+        <h2>Date de génération : {{ 'now'|date('d/m/Y H:i') }}</h2>
+    </div>
+
+    {% for zone, stats in zonesStats %}
+    <div class="zone-card">
+        <h4>{{ zone.nom }}</h4>
+        <div class="stats">
+            <div class="stat-item">
+                <div class="value">{{ stats.collectes }}</div>
+                <div class="label">Collectes</div>
+            </div>
+            <div class="stat-item">
+                <div class="value">{{ stats.tauxCollecte }}%</div>
+                <div class="label">Taux de collecte</div>
+            </div>
+            <div class="stat-item">
+                <div class="value">{{ stats.points }}</div>
+                <div class="label">Points de collecte</div>
+            </div>
+            <div class="stat-item">
+                <div class="value">{{ stats.signalements }}</div>
+                <div class="label">Signalements</div>
+            </div>
+        </div>
+
+        <div class="map">
+            <h5>Carte des Points de Collecte</h5>
+            <div id="map-{{ zone.id }}" style="width: 100%; height: 300px;"></div>
+        </div>
+
+        <div class="section">
+            <h3>Points de Collecte</h3>
+            <div class="table">
+                <table class="table">
+                    <tr>
+                        <th>Adresse</th>
+                        <th>Type de Déchets</th>
+                        <th>Statut</th>
+                        <th>Collectes</th>
+                    </tr>
+                    {% for point in stats.points %}
+                    <tr>
+                        <td>{{ point.adresse }}</td>
+                        <td>{{ point.typeDechets }}</td>
+                        <td>
+                            <span class="badge {% if point.statut == 'actif' %}bg-success{% else %}bg-danger{% endif %}">
+                                {{ point.statut|title }}
+                            </span>
+                        </td>
+                        <td>{{ point.collectes }}</td>
+                    </tr>
+                    {% endfor %}
+                </table>
+            </div>
+        </div>
+
+        <div class="section">
+            <h3>Signalements</h3>
+            <div class="table">
+                <table class="table">
+                    <tr>
+                        <th>Type</th>
+                        <th>Nombre</th>
+                        <th>Taux de Traitement</th>
+                    </tr>
+                    {% for type, data in stats.signalements %}
+                    <tr>
+                        <td>{{ type }}</td>
+                        <td>{{ data.nombre }}</td>
+                        <td>{{ data.taux }}%</td>
+                    </tr>
+                    {% endfor %}
+                </table>
+            </div>
+        </div>
+    </div>
+    {% endfor %}
+</body>
+</html>
+{% endblock %}

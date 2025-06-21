@@ -2,16 +2,113 @@
 <html>
     <head>
         <meta charset="UTF-8">
-        <title>{% block title %}Welcome!{% endblock %}</title>
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <title>{% block title %}Gestion des Déchets{% endblock %}</title>
         <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 128 128%22><text y=%221.2em%22 font-size=%2296%22>⚫️</text><text y=%221.3em%22 x=%220.2em%22 font-size=%2276%22 fill=%22%23fff%22>sf</text></svg>">
+        
+        <!-- Bootstrap CSS -->
+        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+        <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.7.2/font/bootstrap-icons.css" rel="stylesheet">
+        <style>
+            .sidebar {
+                min-height: 100vh;
+                background-color: #f8f9fa;
+                padding: 1rem;
+            }
+            .sidebar .nav-link {
+                padding: 0.5rem 1rem;
+                color: #333;
+                border-radius: 0.25rem;
+            }
+            .sidebar .nav-link:hover {
+                background-color: #e9ecef;
+            }
+            .sidebar .nav-link.active {
+                background-color: #0d6efd;
+                color: white;
+            }
+            .main-content {
+                padding: 2rem;
+            }
+            .navbar-brand {
+                font-weight: bold;
+            }
+        </style>
+        
         {% block stylesheets %}
+            <link href="{{ asset('css/admin.css') }}" rel="stylesheet">
         {% endblock %}
 
         {% block javascripts %}
+            <!-- Bootstrap Bundle with Popper -->
+            <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
             {% block importmap %}{{ importmap('app') }}{% endblock %}
         {% endblock %}
     </head>
     <body>
-        {% block body %}{% endblock %}
+        <div class="container-fluid">
+            <div class="row">
+                <!-- Sidebar -->
+                <div class="col-md-3 col-lg-2 sidebar">
+                    <div class="d-flex align-items-center mb-3">
+                        <i class="bi bi-trash3-fill me-2"></i>
+                        <span class="navbar-brand">Gestion des Déchets</span>
+                    </div>
+                    <hr>
+                    <ul class="nav flex-column">
+                        <li class="nav-item">
+                            <a class="nav-link {% if app.request.attributes.get('_route') == 'app_dashboard' %}active{% endif %}" href="{{ path('app_dashboard') }}">
+                                <i class="bi bi-house-door-fill me-2"></i> Accueil
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link {% if app.request.attributes.get('_route') == 'app_zone_index' %}active{% endif %}" href="{{ path('app_zone_index') }}">
+                                <i class="bi bi-map-fill me-2"></i> Zones
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link {% if app.request.attributes.get('_route') == 'app_dechet_index' %}active{% endif %}" href="{{ path('app_dechet_index') }}">
+                                <i class="bi bi-trash-fill me-2"></i> Déchets
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link {% if app.request.attributes.get('_route') == 'app_collecte_index' %}active{% endif %}" href="{{ path('app_collecte_index') }}">
+                                <i class="bi bi-truck me-2"></i> Collectes
+                            </a>
+                        </li>
+                        {% if is_granted('ROLE_ADMIN') %}
+                        <li class="nav-item">
+                            <a class="nav-link {% if app.request.attributes.get('_route') == 'app_user_index' %}active{% endif %}" href="{{ path('app_user_index') }}">
+                                <i class="bi bi-people-fill me-2"></i> Utilisateurs
+                            </a>
+                        </li>
+                        {% endif %}
+                        <hr>
+                        <li class="nav-item">
+                            {% if app.user %}
+                            <a class="nav-link" href="{{ path('app_profile') }}">
+                                <i class="bi bi-person-circle me-2"></i> Profil
+                            </a>
+                            <a class="nav-link text-danger" href="{{ path('app_logout') }}">
+                                <i class="bi bi-box-arrow-right me-2"></i> Déconnexion
+                            </a>
+                            {% else %}
+                            <a class="nav-link" href="{{ path('app_login') }}">
+                                <i class="bi bi-box-arrow-in-right me-2"></i> Connexion
+                            </a>
+                            <a class="nav-link" href="{{ path('citizen_register') }}">
+                                <i class="bi bi-person-plus-fill me-2"></i> Inscription Citoyen
+                            </a>
+                            {% endif %}
+                        </li>
+                    </ul>
+                </div>
+
+                <!-- Main Content -->
+                <div class="col-md-9 col-lg-10 main-content">
+                    {% block body %}{% endblock %}
+                </div>
+            </div>
+        </div>
     </body>
 </html>

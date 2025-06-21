@@ -15,6 +15,32 @@ services:
     # this creates a service per class whose id is the fully-qualified class name
     App\:
         resource: '../src/'
+        exclude:
+            - '../src/DependencyInjection/*'
+            - '../src/Kernel.php'
+            - '../src/Tests/*'
 
-    # add more service definitions when explicit configuration is needed
-    # please note that last definitions always *replace* previous ones
+    # Repositories
+    App\Repository\:
+        resource: '../src/Repository'
+        tags: ['doctrine.repository']
+
+    # Controllers are imported separately to make sure services can be injected
+    # as action arguments even if you don't extend any base controller class
+    App\Controller\:
+        resource: '../src/Controller'
+        tags: ['controller.service_arguments']
+
+    # Service pour la redirection après la connexion
+    App\Security\AuthenticationSuccessHandler:
+        arguments:
+            - '@security.http_utils'
+            - { default_target_path: '/dashboard' }
+
+when@test:
+    services:
+        # Test environment specific services
+        App\Tests\:
+            resource: '../tests/'
+            public: true
+            tags: ['test.service']

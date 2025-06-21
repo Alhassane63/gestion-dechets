@@ -1,0 +1,51 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Choix du type de compte{% endblock %}
+
+{% block body %}
+{% if not app.user %}
+<div class="container mt-5">
+    <div class="row justify-content-center">
+        <div class="col-md-6">
+            <div class="card">
+                <div class="card-header">
+                    <h2 class="text-center">Créer un nouveau compte</h2>
+                </div>
+                <div class="card-body">
+                    <form method="post">
+                        {{ form_start(accountTypeForm, {'attr': {'data-turbo': 'false'}}) }}
+                        <div class="text-center mb-4">
+                            <p class="text-muted">Choisissez le type de compte que vous souhaitez créer :</p>
+                            {{ form_widget(accountTypeForm.accountType) }}
+                            <div class="mt-2">
+                                <small class="text-muted">
+                                    {{ form_help(accountTypeForm.accountType) }}
+                                </small>
+                            </div>
+                        </div>
+                        <div class="d-grid">
+                            {{ form_widget(accountTypeForm.submit) }}
+                        </div>
+                        {{ form_end(accountTypeForm) }}
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% else %}
+<div class="container mt-5">
+    <div class="row justify-content-center">
+        <div class="col-md-6">
+            <div class="card">
+                <div class="card-body text-center">
+                    <h3>Vous êtes déjà connecté</h3>
+                    <p>Vous êtes actuellement connecté en tant que {{ app.user.username }}.</p>
+                    <a href="{{ path('app_dashboard') }}" class="btn btn-primary">Accéder au tableau de bord</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endif %}
+{% endblock %}

@@ -1,0 +1,27 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Test{% endblock %}
+
+{% block body %}
+<div class="container mt-5">
+    <div class="row justify-content-center">
+        <div class="col-md-6">
+            <div class="alert alert-success">
+                {{ message }}
+            </div>
+            <div class="card">
+                <div class="card-header">
+                    <h2 class="text-center">Test de l'application</h2>
+                </div>
+                <div class="card-body">
+                    <p>L'application fonctionne correctement !</p>
+                    <div class="mt-3">
+                        <a href="{{ path('app_register') }}" class="btn btn-primary">Inscription</a>
+                        <a href="{{ path('app_login') }}" class="btn btn-secondary">Connexion</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

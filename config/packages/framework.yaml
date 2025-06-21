@@ -3,7 +3,18 @@ framework:
     secret: '%env(APP_SECRET)%'
 
     # Note that the session will be started ONLY if you read or write from it.
-    session: true
+    session:
+        handler_id: ~
+        name: 'GESTION_DECHETS_SESSION'
+        cookie_secure: auto
+        cookie_samesite: lax
+        cookie_lifetime: 3600
+        storage_factory_id: session.storage.factory.native
+
+    # Enable the Form component
+    form:
+        enabled: true
+        csrf_protection: true
 
     #esi: true
     #fragments: true

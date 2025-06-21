@@ -1,0 +1,108 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Administration - {{ parent() }}{% endblock %}
+
+{% block body %}
+    <div class="container-fluid">
+        <div class="row">
+            <!-- Sidebar -->
+            <nav id="sidebar" class="col-md-3 col-lg-2 d-md-block bg-light sidebar">
+                <div class="position-sticky pt-3">
+                    <ul class="nav flex-column">
+                        <li class="nav-item">
+                            <a class="nav-link active" href="{{ path('app_admin_dashboard') }}">
+                                <i class="fas fa-tachometer-alt"></i>
+                                Tableau de bord
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="{{ path('app_admin_users') }}">
+                                <i class="fas fa-users"></i>
+                                Utilisateurs
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="{{ path('app_admin_tournées') }}">
+                                <i class="fas fa-route"></i>
+                                Tournées
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="{{ path('app_admin_points') }}">
+                                <i class="fas fa-map-marker-alt"></i>
+                                Points de collecte
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="{{ path('app_admin_collectes') }}">
+                                <i class="fas fa-trash-alt"></i>
+                                Collectes
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="{{ path('app_admin_statistiques') }}">
+                                <i class="fas fa-chart-bar"></i>
+                                Statistiques
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link dropdown-toggle" href="#" id="exportDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                <i class="fas fa-file-export"></i>
+                                Exports
+                            </a>
+                            <ul class="dropdown-menu" aria-labelledby="exportDropdown">
+                                <li>
+                                    <a class="dropdown-item" href="{{ path('app_export_filters') }}">
+                                        <i class="fas fa-filter"></i>
+                                        Filtres d'export
+                                    </a>
+                                </li>
+                                <li>
+                                    <hr class="dropdown-divider">
+                                </li>
+                                <li>
+                                    <a class="dropdown-item" href="{{ path('app_export_general_pdf') }}">
+                                        <i class="fas fa-file-pdf"></i>
+                                        Rapport général (PDF)
+                                    </a>
+                                </li>
+                                <li>
+                                    <a class="dropdown-item" href="{{ path('app_export_agents_pdf') }}">
+                                        <i class="fas fa-file-pdf"></i>
+                                        Rapport par agent (PDF)
+                                    </a>
+                                </li>
+                                <li>
+                                    <a class="dropdown-item" href="{{ path('app_export_zones_pdf') }}">
+                                        <i class="fas fa-file-pdf"></i>
+                                        Rapport par zone (PDF)
+                                    </a>
+                                </li>
+                                <li>
+                                    <hr class="dropdown-divider">
+                                </li>
+                                <li>
+                                    <a class="dropdown-item" href="{{ path('app_export_collectes_excel') }}">
+                                        <i class="fas fa-file-excel"></i>
+                                        Collectes (Excel)
+                                    </a>
+                                </li>
+                                <li>
+                                    <a class="dropdown-item" href="{{ path('app_export_signalements_excel') }}">
+                                        <i class="fas fa-file-excel"></i>
+                                        Signalements (Excel)
+                                    </a>
+                                </li>
+                            </ul>
+                        </li>
+                    </ul>
+                </div>
+            </nav>
+
+            <!-- Main content -->
+            <main class="col-md-9 ms-sm-auto col-lg-10 px-md-4">
+                {% block admin_content %}{% endblock %}
+            </main>
+        </div>
+    </div>
+{% endblock %}

@@ -1,0 +1,110 @@
+{% extends 'citoyen/base.html.twig' %}
+
+{% block citoyen_content %}
+<div class="row">
+    <!-- Prochaines tournées -->
+    <div class="col-md-6">
+        <div class="card mb-4">
+            <div class="card-header">
+                <h5 class="mb-0">Prochaines tournées</h5>
+            </div>
+            <div class="card-body">
+                <div class="table-responsive">
+                    <table class="table table-striped">
+                        <thead>
+                            <tr>
+                                <th>Date</th>
+                                <th>Heure</th>
+                                <th>Agent</th>
+                                <th>Points de collecte</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for tournee in prochaines_tournées %}
+                            <tr>
+                                <td>{{ tournee.date|date('d/m/Y') }}</td>
+                                <td>{{ tournee.heureDebut|date('H:i') }} - {{ tournee.heureFin|date('H:i') }}</td>
+                                <td>{{ tournee.agent.prenom }} {{ tournee.agent.nom }}</td>
+                                <td>
+                                    <ul class="list-unstyled mb-0">
+                                        {% for point in tournee.pointCollectes %}
+                                        <li>{{ point.adresse }}</li>
+                                        {% endfor %}
+                                    </ul>
+                                </td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Mes signalements -->
+    <div class="col-md-6">
+        <div class="card mb-4">
+            <div class="card-header">
+                <h5 class="mb-0">Mes signalements</h5>
+            </div>
+            <div class="card-body">
+                <div class="table-responsive">
+                    <table class="table table-striped">
+                        <thead>
+                            <tr>
+                                <th>Date</th>
+                                <th>Description</th>
+                                <th>Status</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for signalement in mes_signalements %}
+                            <tr>
+                                <td>{{ signalement.date|date('d/m/Y H:i') }}</td>
+                                <td>{{ signalement.description }}</td>
+                                <td><span class="badge bg-{{ signalement.status == 'TRAITE' ? 'success' : 'warning' }}">{{ signalement.status }}</span></td>
+                                <td>
+                                    <a href="{{ path('app_citoyen_signalement_show', {'id': signalement.id}) }}" class="btn btn-sm btn-primary">
+                                        <i class="fas fa-eye"></i>
+                                    </a>
+                                </td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Nouveau signalement -->
+<div class="card">
+    <div class="card-header">
+        <h5 class="mb-0">Nouveau signalement</h5>
+    </div>
+    <div class="card-body">
+        {{ form_start(signalementForm) }}
+        <div class="mb-3">
+            {{ form_label(signalementForm.type) }}
+            {{ form_widget(signalementForm.type, {'attr': {'class': 'form-control'}}) }}
+            {{ form_errors(signalementForm.type) }}
+        </div>
+        <div class="mb-3">
+            {{ form_label(signalementForm.description) }}
+            {{ form_widget(signalementForm.description, {'attr': {'class': 'form-control'}}) }}
+            {{ form_errors(signalementForm.description) }}
+        </div>
+        <div class="mb-3">
+            {{ form_label(signalementForm.photo) }}
+            {{ form_widget(signalementForm.photo, {'attr': {'class': 'form-control'}}) }}
+            {{ form_errors(signalementForm.photo) }}
+        </div>
+        <div class="d-grid">
+            <button type="submit" class="btn btn-primary">Envoyer le signalement</button>
+        </div>
+        {{ form_end(signalementForm) }}
+    </div>
+</div>
+{% endblock %}

@@ -1,0 +1,93 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Points de Collecte{% endblock %}
+
+{% block body %}
+<div class="container-fluid">
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <h1>Points de Collecte</h1>
+        <a href="{{ path('app_point_collecte_new') }}" class="btn btn-primary">Ajouter un nouveau point</a>
+    </div>
+
+    <div class="card shadow mb-4">
+        <div class="card-body">
+            <div class="table-responsive">
+                <table class="table table-bordered" id="pointsTable" width="100%" cellspacing="0">
+                    <thead>
+                        <tr>
+                            <th>Nom</th>
+                            <th>Zone</th>
+                            <th>Adresse</th>
+                            <th>Latitude</th>
+                            <th>Longitude</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for point in points %}
+                        <tr>
+                            <td>{{ point.nom }}</td>
+                            <td>{{ point.zone.nom }}</td>
+                            <td>{{ point.adresse }}</td>
+                            <td>{{ point.latitude }}</td>
+                            <td>{{ point.longitude }}</td>
+                            <td>
+                                <a href="{{ path('app_point_collecte_show', {'id': point.id}) }}" class="btn btn-info btn-sm">Voir</a>
+                                <a href="{{ path('app_point_collecte_edit', {'id': point.id}) }}" class="btn btn-warning btn-sm">Modifier</a>
+                                <button class="btn btn-danger btn-sm delete-point" data-id="{{ point.id }}">Supprimer</button>
+                            </td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block javascripts %}
+{{ parent() }}
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    // Initialisation de DataTables
+    const table = $('#pointsTable').DataTable({
+        language: {
+            url: '//cdn.datatables.net/plug-ins/1.11.5/i18n/fr-FR.json'
+        },
+        responsive: true
+    });
+
+    // Gestion de la suppression
+    document.querySelectorAll('.delete-point').forEach(button => {
+        button.addEventListener('click', function() {
+            const pointId = this.dataset.id;
+            
+            if (confirm('Êtes-vous sûr de vouloir supprimer ce point de collecte ?')) {
+                fetch(`/point-collecte/${pointId}`, {
+                    method: 'DELETE',
+                    headers: {
+                        'X-Requested-With': 'XMLHttpRequest'
+                    }
+                })
+                .then(response => response.json())
+                .then(data => {
+                    if (data.success) {
+                        // Rafraîchir la table
+                        table.ajax.reload();
+                        // Afficher un message de succès
+                        alert('Point de collecte supprimé avec succès !');
+                    } else {
+                        alert('Erreur lors de la suppression du point de collecte.');
+                    }
+                })
+                .catch(error => {
+                    console.error('Erreur:', error);
+                    alert('Une erreur est survenue. Veuillez réessayer.');
+                });
+            }
+        });
+    });
+});
+</script>
+{% endblock %}

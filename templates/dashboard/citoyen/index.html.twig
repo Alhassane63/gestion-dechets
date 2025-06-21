@@ -1,0 +1,189 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Tableau de bord - Citoyen{% endblock %}
+
+{% block body %}
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-md-12">
+            <h1 class="mt-4">Tableau de bord Citoyen</h1>
+            <ol class="breadcrumb mb-4">
+                <li class="breadcrumb-item active">Tableau de bord</li>
+            </ol>
+            
+            <!-- Cartes principales -->
+            <div class="row">
+                <div class="col-xl-3 col-md-6">
+                    <div class="card bg-primary text-white mb-4">
+                        <div class="card-body">
+                            <div class="d-flex justify-content-between align-items-center">
+                                <div>
+                                    <h5 class="text-white mb-0">{{ stats.total_signalements }}</h5>
+                                    <p class="text-white-50 mb-0">Signalements</p>
+                                </div>
+                                <div class="h1 text-white-50">
+                                    <i class="fas fa-flag"></i>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="card-footer d-flex align-items-center justify-content-between">
+                            <a class="small text-white stretched-link" href="{{ path('signalement_index') }}">Voir mes signalements</a>
+                            <div class="small text-white"><i class="fas fa-angle-right"></i></div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-xl-3 col-md-6">
+                    <div class="card bg-warning text-white mb-4">
+                        <div class="card-body">
+                            <div class="d-flex justify-content-between align-items-center">
+                                <div>
+                                    <h5 class="text-white mb-0">{{ stats.total_collectes }}</h5>
+                                    <p class="text-white-50 mb-0">Collectes</p>
+                                </div>
+                                <div class="h1 text-white-50">
+                                    <i class="fas fa-truck"></i>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="card-footer d-flex align-items-center justify-content-between">
+                            <a class="small text-white stretched-link" href="{{ path('app_collecte_index') }}">Voir mes collectes</a>
+                            <div class="small text-white"><i class="fas fa-angle-right"></i></div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-xl-3 col-md-6">
+                    <div class="card bg-success text-white mb-4">
+                        <div class="card-body">
+                            <div class="d-flex justify-content-between align-items-center">
+                                <div>
+                                    <h5 class="text-white mb-0">{{ stats.total_points }}</h5>
+                                    <p class="text-white-50 mb-0">Points de collecte</p>
+                                </div>
+                                <div class="h1 text-white-50">
+                                    <i class="fas fa-map-marker-alt"></i>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="card-footer d-flex align-items-center justify-content-between">
+                            <a class="small text-white stretched-link" href="{{ path('app_admin_points') }}">Voir les points</a>
+                            <div class="small text-white"><i class="fas fa-angle-right"></i></div>
+                                </div>
+                                <div class="h1 text-white-50">
+                                    <i class="fas fa-clock"></i>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Carte et signalements -->
+            <div class="row">
+                <div class="col-xl-8">
+                    <div class="card mb-4">
+                        <div class="card-header">
+                            <i class="fas fa-map-marker-alt me-1"></i>
+                            Points de Collecte Proches
+                        </div>
+                        <div class="card-body">
+                            <div id="map" style="height: 400px;"></div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-xl-4">
+                    <div class="card mb-4">
+                        <div class="card-header">
+                            <i class="fas fa-list me-1"></i>
+                            Mes Derniers Signalements
+                        </div>
+                        <div class="card-body">
+                            <div class="list-group">
+                                {% for signalement in stats.last_signalements %}
+                                    <a href="#" class="list-group-item list-group-item-action">
+                                        <div class="d-flex w-100 justify-content-between">
+                                            <h5 class="mb-1">{{ signalement.type }}</h5>
+                                            <small>{{ signalement.dateSignalement|date('d/m/Y') }}</small>
+                                        </div>
+                                        <p class="mb-1">{{ signalement.description|slice(0, 100) }}{% if signalement.description.length > 100 %}...{% endif %}</p>
+                                        <small>Statut : {{ signalement.statut }}</small>
+                                    </a>
+                                {% else %}
+                                    <div class="list-group-item">
+                                        <p class="text-muted text-center">Aucun signalement récent</p>
+                                    </div>
+                                {% endfor %}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="dashboard-content">
+                <h1>Tableau de bord Citoyen</h1>
+                
+                {# Ajout des images #}
+                <div class="dashboard-images">
+                    <div class="image-container">
+                        <img src="{{ asset('images/dashboard/tri-dechets.jpg') }}" alt="Tri des déchets" class="dashboard-image">
+                        <img src="{{ asset('images/dashboard/poubelles.jpg') }}" alt="Poubelles triées" class="dashboard-image">
+                        <img src="{{ asset('images/dashboard/collecte.jpg') }}" alt="Collecte des déchets" class="dashboard-image">
+                    </div>
+                </div>
+
+                <div class="stats-container">
+                    <div class="stats-row">
+                        <div class="stat-box">
+                            <h3>Total Signalements</h3>
+                            <p>{{ stats.total_signalements }}</p>
+                        </div>
+                        <div class="stat-box">
+                            <h3>Total Points</h3>
+                            <p>{{ stats.total_points }}</p>
+                        </div>
+                        <div class="stat-box">
+                            <h3>Derniers Signalements</h3>
+                            <ul>
+                                {% for signalement in stats.last_signalements %}
+                                    <li>{{ signalement.date|date('d/m/Y') }}</li>
+                                {% endfor %}
+                            </ul>
+                        </div>
+                    </div>
+                    <div class="stats-row">
+                        <div class="stat-box">
+                            <h3>Types de Déchets</h3>
+                            <ul>
+                                {% for type in stats.types_dechets %}
+                                    <li>{{ type }}</li>
+                                {% endfor %}
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block javascripts %}
+    {{ parent() }}
+    <script src='https://api.mapbox.com/mapbox-gl-js/v2.15.0/mapbox-gl.js'></script>
+    <script src="https://api.mapbox.com/mapbox-gl-js/plugins/mapbox-gl-geocoder/v4.7.0/mapbox-gl-geocoder.min.js"></script>
+    <link rel="stylesheet" href="https://api.mapbox.com/mapbox-gl-js/v2.15.0/mapbox-gl.css">
+    <link rel="stylesheet" href="https://api.mapbox.com/mapbox-gl-js/plugins/mapbox-gl-geocoder/v4.7.0/mapbox-gl-geocoder.css">
+    <script>
+        mapboxgl.accessToken = 'YOUR_MAPBOX_ACCESS_TOKEN';
+        var map = new mapboxgl.Map({
+            container: 'map',
+            style: 'mapbox://styles/mapbox/streets-v11',
+            center: [0, 0],
+            zoom: 2
+        });
+
+        // Ajouter le contrôle de navigation
+        map.addControl(new mapboxgl.NavigationControl());
+        var marker = new mapboxgl.Marker()
+            .setLngLat([0, 0])
+            .addTo(map);
+    </script>
+{% endblock %}

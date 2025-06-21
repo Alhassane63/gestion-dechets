@@ -1,0 +1,51 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Export Excel - Signalements{% endblock %}
+
+{% block body %}
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>Export Excel - Signalements</title>
+</head>
+<body>
+    <table>
+        <thead>
+            <tr>
+                <th>Citoyen</th>
+                <th>Zone</th>
+                <th>Type de Problème</th>
+                <th>Lieu</th>
+                <th>Description</th>
+                <th>Date</th>
+                <th>État</th>
+                <th>Statut</th>
+                <th>Date de Traitement</th>
+                <th>Commentaire de Traitement</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for signalement in signalements %}
+            <tr>
+                <td>{{ signalement.citoyen.prenom }} {{ signalement.citoyen.nom }}</td>
+                <td>{{ signalement.zone.nom }}</td>
+                <td>{{ signalement.type|title }}</td>
+                <td>{{ signalement.lieu }}</td>
+                <td>{{ signalement.description }}</td>
+                <td>{{ signalement.dateSignalement|date('d/m/Y H:i') }}</td>
+                <td>{{ signalement.etat|title }}</td>
+                <td>{{ signalement.statut|title }}</td>
+                <td>
+                    {% if signalement.dateTraitement %}
+                    {{ signalement.dateTraitement|date('d/m/Y H:i') }}
+                    {% endif %}
+                </td>
+                <td>{{ signalement.commentaireTraitement }}</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</body>
+</html>
+{% endblock %}

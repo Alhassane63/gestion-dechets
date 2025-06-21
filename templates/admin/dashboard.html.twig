@@ -1,0 +1,113 @@
+{% extends 'admin/base.html.twig' %}
+
+{% block admin_content %}
+<div class="row">
+    <!-- Statistiques -->
+    <div class="col-md-3">
+        <div class="card bg-primary text-white mb-4">
+            <div class="card-body">
+                <h5 class="card-title">Utilisateurs</h5>
+                <p class="card-text display-6">{{ stats.total_users }}</p>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-3">
+        <div class="card bg-success text-white mb-4">
+            <div class="card-body">
+                <h5 class="card-title">Tournées</h5>
+                <p class="card-text display-6">{{ stats.total_tournées }}</p>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-3">
+        <div class="card bg-info text-white mb-4">
+            <div class="card-body">
+                <h5 class="card-title">Points de collecte</h5>
+                <p class="card-text display-6">{{ stats.total_points }}</p>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-3">
+        <div class="card bg-warning text-white mb-4">
+            <div class="card-body">
+                <h5 class="card-title">Collectes aujourd'hui</h5>
+                <p class="card-text display-6">{{ stats.collectes_today }}</p>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Dernières collectes -->
+<div class="card mb-4">
+    <div class="card-header">
+        <h5 class="mb-0">Dernières collectes</h5>
+    </div>
+    <div class="card-body">
+        <div class="table-responsive">
+            <table class="table table-striped">
+                <thead>
+                    <tr>
+                        <th>Date</th>
+                        <th>Point de collecte</th>
+                        <th>Agent</th>
+                        <th>Statut</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for collecte in dernières_collectes %}
+                    <tr>
+                        <td>{{ collecte.dateCollecte|date('d/m/Y H:i') }}</td>
+                        <td>{{ collecte.pointCollecte.adresse }}</td>
+                        <td>{{ collecte.agent.prenom }} {{ collecte.agent.nom }}</td>
+                        <td><span class="badge bg-{{ collecte.statut == 'COLLECTE' ? 'success' : 'danger' }}">{{ collecte.statut }}</span></td>
+                        <td>
+                            <a href="{{ path('app_admin_collecte_show', {'id': collecte.id}) }}" class="btn btn-sm btn-primary">
+                                <i class="fas fa-eye"></i>
+                            </a>
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+<!-- Derniers signalements -->
+<div class="card">
+    <div class="card-header">
+        <h5 class="mb-0">Derniers signalements</h5>
+    </div>
+    <div class="card-body">
+        <div class="table-responsive">
+            <table class="table table-striped">
+                <thead>
+                    <tr>
+                        <th>Date</th>
+                        <th>Citoyen</th>
+                        <th>Description</th>
+                        <th>Status</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for signalement in derniers_signalements %}
+                    <tr>
+                        <td>{{ signalement.date|date('d/m/Y H:i') }}</td>
+                        <td>{{ signalement.citoyen.prenom }} {{ signalement.citoyen.nom }}</td>
+                        <td>{{ signalement.description }}</td>
+                        <td><span class="badge bg-{{ signalement.status == 'TRAITE' ? 'success' : 'warning' }}">{{ signalement.status }}</span></td>
+                        <td>
+                            <a href="{{ path('app_admin_signalement_show', {'id': signalement.id}) }}" class="btn btn-sm btn-primary">
+                                <i class="fas fa-eye"></i>
+                            </a>
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+{% endblock %}

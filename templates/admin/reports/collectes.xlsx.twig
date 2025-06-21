@@ -1,0 +1,49 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Export Excel - Collectes{% endblock %}
+
+{% block body %}
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>Export Excel - Collectes</title>
+</head>
+<body>
+    <table>
+        <thead>
+            <tr>
+                <th>Agent</th>
+                <th>Zone</th>
+                <th>Point de Collecte</th>
+                <th>Type de Déchets</th>
+                <th>Date</th>
+                <th>Heure</th>
+                <th>Collecte Effectuée</th>
+                <th>Commentaire</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for collecte in collectes %}
+            <tr>
+                <td>{{ collecte.agent.prenom }} {{ collecte.agent.nom }}</td>
+                <td>{{ collecte.pointCollecte.zone.nom }}</td>
+                <td>{{ collecte.pointCollecte.adresse }}</td>
+                <td>{{ collecte.pointCollecte.typeDechets }}</td>
+                <td>{{ collecte.dateCollecte|date('d/m/Y') }}</td>
+                <td>{{ collecte.heureCollecte|date('H:i') }}</td>
+                <td>
+                    {% if collecte.collecteEffectuee %}
+                    Oui
+                    {% else %}
+                    Non
+                    {% endif %}
+                </td>
+                <td>{{ collecte.commentaire }}</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</body>
+</html>
+{% endblock %}

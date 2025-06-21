@@ -1,5 +1,151 @@
+# Configuration des routes via les attributs des contrôleurs
 controllers:
-    resource:
-        path: ../src/Controller/
-        namespace: App\Controller
+    resource: '../src/Controller/'
+    type: attribute
+
+# Routes spécifiques
+app_collecte_index:
+    path: /collecte
+    controller: App\Controller\CollecteController::index
+    methods: [GET]
+
+app_collecte_new:
+    path: /collecte/new
+    controller: App\Controller\CollecteController::new
+    methods: [GET, POST]
+
+app_collecte_edit:
+    path: /collecte/{id}/edit
+    controller: App\Controller\CollecteController::edit
+    methods: [GET, POST]
+
+app_collecte_delete:
+    path: /collecte/{id}
+    controller: App\Controller\CollecteController::delete
+    methods: [POST]
+
+# Route de test
+app_test:
+    path: /test
+    controller: App\Controller\TestController::test
+
+# Création du superuser
+app_superuser_create:
+    path: /superuser/create
+    controller: App\Controller\SuperUserController::createSuperuser
+    methods: [GET]
+
+# Route pour tester les utilisateurs
+app_test_users:
+    path: /test-users
+    controller: App\Controller\TestUserController::testUsers
+    methods: [GET]
+
+# Tableau de bord
+app_dashboard:
+    path: /dashboard
+    controller: App\Controller\DashboardController::index
+    methods: [GET]
+
+# Tableau de bord agent
+app_dashboard_agent:
+    path: /dashboard/agent
+    controller: App\Controller\DashboardController::dashboardAgent
+    methods: [GET]
+    requirements:
+        _role: ROLE_AGENT
+
+# Tableau de bord citoyen
+app_dashboard_citoyen:
+    path: /dashboard/citoyen
+    controller: App\Controller\DashboardController::dashboardCitoyen
+    methods: [GET]
+    requirements:
+        _role: ROLE_CITOYEN
+
+# Administration
+app_admin_users:
+    path: /admin/users
+    controller: App\Controller\AdminController::users
+    methods: [GET]
+    requirements:
+        _role: ROLE_ADMIN
+
+# Tournées
+app_admin_tournées:
+    path: /admin/tournées
+    controller: App\Controller\TourneeController::index
+    methods: [GET]
+    requirements:
+        _role: ROLE_ADMIN
+
+# Points de collecte
+app_admin_points:
+    path: /admin/points
+    controller: App\Controller\PointCollecteController::index
+    methods: [GET]
+    requirements:
+        _role: ROLE_ADMIN
+
+# Collectes
+app_admin_collectes:
+    path: /admin/collectes
+    controller: App\Controller\CollecteController::index
+    methods: [GET]
+    requirements:
+        _role: ROLE_ADMIN
+
+# Statistiques
+app_admin_statistiques:
+    path: /admin/statistiques
+    controller: App\Controller\StatistiqueController::index
+    methods: [GET]
+    requirements:
+        _role: ROLE_ADMIN
+
+# Signalements
+app_signalement_index:
+    path: /signalement
+    controller: App\Controller\SignalementController::index
+    methods: [GET]
+
+app_signalement_new:
+    path: /signalement/new
+    controller: App\Controller\SignalementController::new
+    methods: [GET, POST]
+
+app_signalement_show:
+    path: /signalement/{id}
+    controller: App\Controller\SignalementController::show
+    methods: [GET]
+
+app_signalement_edit:
+    path: /signalement/{id}/edit
+    controller: App\Controller\SignalementController::edit
+    methods: [GET, POST]
+
+app_signalement_delete:
+    path: /signalement/{id}
+    controller: App\Controller\SignalementController::delete
+    methods: [POST]
+
+# Routes d'inscription
+app_register:
+    path: /register
+    controller: App\Controller\RegistrationController::register
+    methods: [GET, POST]
+
+app_register_role_redirect:
+    path: /register/role
+    controller: App\Controller\RedirectController::redirectToRegisterForm
+    methods: [GET]
+
+app_register_form:
+    path: /register/form/{role}
+    controller: App\Controller\RegistrationController::registerForm
+    methods: [GET, POST]
+
+# Kernel (optionnel ici si tu utilises des attributs)
+kernel:
+    resource: ../src/Kernel.php
     type: attribute

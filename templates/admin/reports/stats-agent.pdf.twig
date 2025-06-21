@@ -1,0 +1,163 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Rapport - Statistiques par Agent{% endblock %}
+
+{% block body %}
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>Rapport - Statistiques par Agent</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+        }
+        .header {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+        .header h1 {
+            font-size: 24px;
+            margin-bottom: 10px;
+        }
+        .header h2 {
+            font-size: 16px;
+            color: #666;
+        }
+        .section {
+            margin-bottom: 30px;
+        }
+        .section h3 {
+            color: #333;
+            margin-bottom: 15px;
+        }
+        .table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 15px 0;
+        }
+        .table th, .table td {
+            border: 1px solid #ddd;
+            padding: 8px;
+            text-align: left;
+        }
+        .table th {
+            background-color: #f4f4f4;
+        }
+        .agent-card {
+            background-color: #f8f9fa;
+            padding: 15px;
+            margin-bottom: 15px;
+            border-radius: 4px;
+        }
+        .agent-card h4 {
+            margin-top: 0;
+            color: #2c3e50;
+        }
+        .agent-card .stats {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            gap: 15px;
+            margin-top: 15px;
+        }
+        .agent-card .stat-item {
+            background-color: white;
+            padding: 10px;
+            border-radius: 4px;
+            text-align: center;
+        }
+        .agent-card .stat-item .value {
+            font-size: 24px;
+            font-weight: bold;
+            color: #2c3e50;
+        }
+        .agent-card .stat-item .label {
+            color: #666;
+            font-size: 12px;
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <h1>Rapport - Statistiques par Agent</h1>
+        <h2>Période : {{ periodeDebut|date('d/m/Y') }} - {{ periodeFin|date('d/m/Y') }}</h2>
+        <h2>Date de génération : {{ 'now'|date('d/m/Y H:i') }}</h2>
+    </div>
+
+    {% for agent, stats in agentsStats %}
+    <div class="agent-card">
+        <h4>{{ agent.prenom }} {{ agent.nom }}</h4>
+        <div class="stats">
+            <div class="stat-item">
+                <div class="value">{{ stats.collectes }}</div>
+                <div class="label">Collectes</div>
+            </div>
+            <div class="stat-item">
+                <div class="value">{{ stats.tauxCollecte }}%</div>
+                <div class="label">Taux de collecte</div>
+            </div>
+            <div class="stat-item">
+                <div class="value">{{ stats.tournées }}</div>
+                <div class="label">Tournées</div>
+            </div>
+            <div class="stat-item">
+                <div class="value">{{ stats.efficiency }}%</div>
+                <div class="label">Efficacité</div>
+            </div>
+        </div>
+        
+        <div class="section">
+            <h3>Tournées Attribuées</h3>
+            <div class="table">
+                <table class="table">
+                    <tr>
+                        <th>Tournée</th>
+                        <th>Zone</th>
+                        <th>Date</th>
+                        <th>Heures</th>
+                        <th>Statut</th>
+                    </tr>
+                    {% for tournee in stats.tournees %}
+                    <tr>
+                        <td>{{ tournee.nom }}</td>
+                        <td>{{ tournee.zone.nom }}</td>
+                        <td>{{ tournee.date|date('d/m/Y') }}</td>
+                        <td>{{ tournee.heureDebut|date('H:i') }} - {{ tournee.heureFin|date('H:i') }}</td>
+                        <td>
+                            <span class="badge {% if tournee.active %}bg-success{% else %}bg-danger{% endif %}">
+                                {{ tournee.active ? 'Active' : 'Inactive' }}
+                            </span>
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </table>
+            </div>
+        </div>
+
+        <div class="section">
+            <h3>Collectes par Zone</h3>
+            <div class="table">
+                <table class="table">
+                    <tr>
+                        <th>Zone</th>
+                        <th>Nombre de Collectes</th>
+                        <th>Taux de Collecte</th>
+                        <th>Points de Collecte</th>
+                    </tr>
+                    {% for zone, data in stats.zones %}
+                    <tr>
+                        <td>{{ zone.nom }}</td>
+                        <td>{{ data.collectes }}</td>
+                        <td>{{ data.tauxCollecte }}%</td>
+                        <td>{{ data.points }}</td>
+                    </tr>
+                    {% endfor %}
+                </table>
+            </div>
+        </div>
+    </div>
+    {% endfor %}
+</body>
+</html>
+{% endblock %}

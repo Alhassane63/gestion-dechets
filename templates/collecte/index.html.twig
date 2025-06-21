@@ -1,0 +1,66 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Collectes{% endblock %}
+
+{% block body %}
+<div class="container-fluid">
+    <div class="d-sm-flex align-items-center justify-content-between mb-4">
+        <h1 class="h3 mb-0 text-gray-800">Collectes</h1>
+        <a href="{{ path('app_collecte_new') }}" class="d-none d-sm-inline-block btn btn-sm btn-primary shadow-sm">
+            <i class="fas fa-plus fa-sm text-white-50"></i> Nouvelle Collecte
+        </a>
+    </div>
+
+    <div id="collectes-container">
+        <table class="table table-striped">
+            <thead>
+                <tr>
+                    <th>Date</th>
+                    <th>Agent</th>
+                    <th>Point de collecte</th>
+                    <th>État</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% if collectes is not empty %}
+                    {% for collecte in collectes %}
+                        <tr>
+                            <td>{{ collecte.date|date('d/m/Y') }}</td>
+                            <td>{{ collecte.agent.nom }} {{ collecte.agent.prenom }}</td>
+                            <td>{{ collecte.pointCollecte.nom }}</td>
+                            <td>
+                                {% if collecte.estEffectuee %}
+                                    <span class="badge bg-success">Effectuée</span>
+                                {% else %}
+                                    <span class="badge bg-warning">Planifiée</span>
+                                {% endif %}
+                            </td>
+                            <td>
+                                <div class="btn-group">
+                                    <a href="{{ path('app_collecte_show', {'id': collecte.id}) }}" class="btn btn-sm btn-info">
+                                        <i class="bi bi-eye"></i>
+                                    </a>
+                                    <a href="{{ path('app_collecte_edit', {'id': collecte.id}) }}" class="btn btn-sm btn-warning">
+                                        <i class="bi bi-pencil"></i>
+                                    </a>
+                                    <form action="{{ path('app_collecte_delete', {'id': collecte.id}) }}" method="post" class="d-inline">
+                                        <button type="submit" class="btn btn-sm btn-danger" onclick="return confirm('Êtes-vous sûr de vouloir supprimer cette collecte ?')">
+                                            <i class="bi bi-trash"></i>
+                                        </button>
+                                        <input type="hidden" name="_token" value="{{ csrf_token('delete' ~ collecte.id) }}">
+                                    </form>
+                                </div>
+                            </td>
+                        </tr>
+                    {% endfor %}
+                {% else %}
+                    <tr>
+                        <td colspan="5" class="text-center">Aucune collecte n'a été trouvée.</td>
+                    </tr>
+                {% endif %}
+            </tbody>
+        </table>
+    </div>
+</div>
+{% endblock %}

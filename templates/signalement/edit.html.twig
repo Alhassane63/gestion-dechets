@@ -1,0 +1,59 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Modifier signalement #{{ signalement.id }}{% endblock %}
+
+{% block body %}
+<div class="container mt-5">
+    <div class="row">
+        <div class="col-12">
+            <h1>Modifier signalement #{{ signalement.id }}</h1>
+            {{ form_start(form) }}
+            <div class="mb-3">
+                {{ form_label(form.description) }}
+                {{ form_widget(form.description, {'attr': {'class': 'form-control'}}) }}
+                {{ form_errors(form.description) }}
+            </div>
+            <div class="mb-3">
+                {{ form_label(form.lieu) }}
+                {{ form_widget(form.lieu, {'attr': {'class': 'form-control'}}) }}
+                {{ form_errors(form.lieu) }}
+            </div>
+            <div class="mb-3">
+                {{ form_label(form.type) }}
+                {{ form_widget(form.type, {'attr': {'class': 'form-control'}}) }}
+                {{ form_errors(form.type) }}
+            </div>
+            <div class="mb-3">
+                {{ form_label(form.photo) }}
+                {{ form_widget(form.photo, {'attr': {'class': 'form-control'}}) }}
+                {{ form_errors(form.photo) }}
+            </div>
+            <div class="mb-3">
+                {{ form_label(form.etat) }}
+                {{ form_widget(form.etat, {'attr': {'class': 'form-control'}}) }}
+                {{ form_errors(form.etat) }}
+            </div>
+            <div class="mb-3">
+                {{ form_label(form.statut) }}
+                {{ form_widget(form.statut, {'attr': {'class': 'form-control'}}) }}
+                {{ form_errors(form.statut) }}
+            </div>
+            <div class="mb-3">
+                {{ form_label(form.dateTraitement) }}
+                {{ form_widget(form.dateTraitement, {'attr': {'class': 'form-control'}}) }}
+                {{ form_errors(form.dateTraitement) }}
+            </div>
+            <div class="mb-3">
+                {{ form_label(form.commentaireTraitement) }}
+                {{ form_widget(form.commentaireTraitement, {'attr': {'class': 'form-control'}}) }}
+                {{ form_errors(form.commentaireTraitement) }}
+            </div>
+            <div class="mb-3">
+                {{ form_widget(form.submit, {'attr': {'class': 'btn btn-primary'}}) }}
+                <a href="{{ path('app_signalement_index') }}" class="btn btn-secondary">Annuler</a>
+            </div>
+            {{ form_end(form) }}
+        </div>
+    </div>
+</div>
+{% endblock %}

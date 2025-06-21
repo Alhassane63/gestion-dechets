@@ -1,0 +1,57 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Signalements{% endblock %}
+
+{% block body %}{{ parent() }}
+<div class="container mt-5">
+    <div class="row">
+        <div class="col-12">
+            <h1>Signalements</h1>
+            <a href="{{ path('signalement_new') }}" class="btn btn-primary mb-3">Nouveau signalement</a>
+            <div class="table-responsive">
+                <table class="table table-striped">
+                    <thead>
+                        <tr>
+                            <th>ID</th>
+                            <th>Lieu</th>
+                            <th>Description</th>
+                            <th>Date</th>
+                            <th>État</th>
+                            <th>Zone</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for signalement in signalements %}
+                        <tr>
+                            <td>{{ signalement.id }}</td>
+                            <td>{{ signalement.lieu }}</td>
+                            <td>{{ signalement.description|slice(0, 50) }}{% if signalement.description|length > 50 %}...{% endif %}</td>
+                            <td>{{ signalement.dateSignalement|date('d/m/Y H:i') }}</td>
+                            <td>
+                                <span class="badge {% if signalement.etat == 'nouveau' %}bg-warning{% elseif signalement.etat == 'en_cours' %}bg-info{% else %}bg-success{% endif %}">
+                                    {{ signalement.etat|title }}
+                                </span>
+                            </td>
+                            <td>{{ signalement.zone.nom }}</td>
+                            <td>
+                                <a href="{{ path('signalement_show', {'id': signalement.id}) }}" class="btn btn-sm btn-info">Voir</a>
+                                <a href="{{ path('signalement_edit', {'id': signalement.id}) }}" class="btn btn-sm btn-warning">Modifier</a>
+                                <form action="{{ path('signalement_delete', {'id': signalement.id}) }}" method="post" class="d-inline">
+                                    <button type="submit" class="btn btn-sm btn-danger" onclick="return confirm('Êtes-vous sûr de vouloir supprimer ce signalement ?')">Supprimer</button>
+                                    <input type="hidden" name="_token" value="{{ csrf_token('delete' ~ signalement.id) }}">
+                                </form>
+                            </td>
+                        </tr>
+                        {% else %}
+                        <tr>
+                            <td colspan="7" class="text-center">Aucun signalement n'a été trouvé.</td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

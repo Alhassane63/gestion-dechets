@@ -1,0 +1,44 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Nouveau signalement{% endblock %}
+
+{% block body %}
+<div class="container mt-5">
+    <div class="row">
+        <div class="col-12">
+            <h1>Nouveau signalement</h1>
+            {{ form_start(form) }}
+            <div class="mb-3">
+                {{ form_label(form.description) }}
+                {{ form_widget(form.description, {'attr': {'class': 'form-control'}}) }}
+                {{ form_errors(form.description) }}
+            </div>
+            <div class="mb-3">
+                {{ form_label(form.lieu) }}
+                {{ form_widget(form.lieu, {'attr': {'class': 'form-control'}}) }}
+                {{ form_errors(form.lieu) }}
+            </div>
+            <div class="mb-3">
+                {{ form_label(form.type) }}
+                {{ form_widget(form.type, {'attr': {'class': 'form-control'}}) }}
+                {{ form_errors(form.type) }}
+            </div>
+            <div class="mb-3">
+                {{ form_label(form.photo) }}
+                {{ form_widget(form.photo, {'attr': {'class': 'form-control'}}) }}
+                {{ form_errors(form.photo) }}
+            </div>
+            <div class="mb-3">
+                {{ form_label(form.etat) }}
+                {{ form_widget(form.etat, {'attr': {'class': 'form-control'}}) }}
+                {{ form_errors(form.etat) }}
+            </div>
+            <div class="mb-3">
+                {{ form_widget(form.submit, {'attr': {'class': 'btn btn-primary'}}) }}
+                <a href="{{ path('signalement_index') }}" class="btn btn-secondary">Annuler</a>
+            </div>
+            {{ form_end(form) }}
+        </div>
+    </div>
+</div>
+{% endblock %}

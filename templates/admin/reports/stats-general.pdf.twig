@@ -1,0 +1,154 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Rapport - Statistiques Générales{% endblock %}
+
+{% block body %}
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>Rapport - Statistiques Générales</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+        }
+        .header {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+        .header h1 {
+            font-size: 24px;
+            margin-bottom: 10px;
+        }
+        .header h2 {
+            font-size: 16px;
+            color: #666;
+        }
+        .section {
+            margin-bottom: 30px;
+        }
+        .section h3 {
+            color: #333;
+            margin-bottom: 15px;
+        }
+        .table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 15px 0;
+        }
+        .table th, .table td {
+            border: 1px solid #ddd;
+            padding: 8px;
+            text-align: left;
+        }
+        .table th {
+            background-color: #f4f4f4;
+        }
+        .chart {
+            margin: 20px 0;
+        }
+        .chart canvas {
+            max-width: 100%;
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <h1>Rapport - Statistiques Générales</h1>
+        <h2>Période : {{ periodeDebut|date('d/m/Y') }} - {{ periodeFin|date('d/m/Y') }}</h2>
+        <h2>Date de génération : {{ 'now'|date('d/m/Y H:i') }}</h2>
+    </div>
+
+    <div class="section">
+        <h3>1. Statistiques des Collectes</h3>
+        <div class="table">
+            <table class="table">
+                <tr>
+                    <th>Métrique</th>
+                    <th>Valeur</th>
+                </tr>
+                <tr>
+                    <td>Total des collectes</td>
+                    <td>{{ stats.collectes.total }}</td>
+                </tr>
+                <tr>
+                    <td>Collectes effectuées</td>
+                    <td>{{ stats.collectes.effectuees }}</td>
+                </tr>
+                <tr>
+                    <td>Taux de collecte</td>
+                    <td>{{ stats.collectes.taux }}%</td>
+                </tr>
+            </table>
+        </div>
+    </div>
+
+    <div class="section">
+        <h3>2. Statistiques des Signalements</h3>
+        <div class="table">
+            <table class="table">
+                <tr>
+                    <th>Métrique</th>
+                    <th>Valeur</th>
+                </tr>
+                <tr>
+                    <td>Total des signalements</td>
+                    <td>{{ stats.signalements.total }}</td>
+                </tr>
+                <tr>
+                    <td>Signalements traités</td>
+                    <td>{{ stats.signalements.traites }}</td>
+                </tr>
+                <tr>
+                    <td>Taux de traitement</td>
+                    <td>{{ stats.signalements.taux }}%</td>
+                </tr>
+            </table>
+        </div>
+    </div>
+
+    <div class="section">
+        <h3>3. Statistiques par Type de Déchets</h3>
+        <div class="table">
+            <table class="table">
+                <tr>
+                    <th>Type de Déchets</th>
+                    <th>Nombre de Collectes</th>
+                    <th>Pourcentage</th>
+                </tr>
+                {% for type, data in stats.typesDechets %}
+                <tr>
+                    <td>{{ type }}</td>
+                    <td>{{ data.collectes }}</td>
+                    <td>{{ data.pourcentage }}%</td>
+                </tr>
+                {% endfor %}
+            </table>
+        </div>
+    </div>
+
+    <div class="section">
+        <h3>4. Statistiques par Zone</h3>
+        <div class="table">
+            <table class="table">
+                <tr>
+                    <th>Zone</th>
+                    <th>Nombre de Collectes</th>
+                    <th>Taux de Collecte</th>
+                    <th>Signalements</th>
+                </tr>
+                {% for zone, data in stats.zones %}
+                <tr>
+                    <td>{{ zone.nom }}</td>
+                    <td>{{ data.collectes }}</td>
+                    <td>{{ data.tauxCollecte }}%</td>
+                    <td>{{ data.signalements }}</td>
+                </tr>
+                {% endfor %}
+            </table>
+        </div>
+    </div>
+</body>
+</html>
+{% endblock %}

@@ -1,0 +1,44 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Gestion des Déchets{% endblock %}
+
+{% block body %}
+<div class="container mt-5">
+    <div class="row">
+        <div class="col-12 text-center">
+            <h1 class="display-4">Bienvenue dans le Système de Gestion des Déchets</h1>
+            <p class="lead">Une application moderne pour la gestion efficace des déchets</p>
+        </div>
+    </div>
+
+    <div class="row mt-5">
+        <div class="col-md-4">
+            <div class="card">
+                <div class="card-body">
+                    <h5 class="card-title">Zones de Collecte</h5>
+                    <p class="card-text">Gérez les différentes zones de collecte de déchets</p>
+                    <a href="{{ path('zone_index') }}" class="btn btn-primary">Gérer les Zones</a>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="card">
+                <div class="card-body">
+                    <h5 class="card-title">Signalements</h5>
+                    <p class="card-text">Suivez et gérez les signalements des points de collecte</p>
+                    <a href="{{ path('signalement_index') }}" class="btn btn-primary">Gérer les Signalements</a>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="card">
+                <div class="card-body">
+                    <h5 class="card-title">Collectes</h5>
+                    <p class="card-text">Planifiez et suivez les opérations de collecte</p>
+                    <a href="{{ path('collecte_index') }}" class="btn btn-primary">Gérer les Collectes</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

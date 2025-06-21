@@ -1,0 +1,36 @@
+{% extends 'base-login.html.twig' %}
+
+{% block title %}Inscription{% endblock %}
+
+{% block body %}
+    {% for type, messages in app.flashes %}
+        {% for message in messages %}
+            <div class="alert alert-{{ type }} alert-dismissible fade show" role="alert">
+                {{ message }}
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+            </div>
+        {% endfor %}
+    {% endfor %}
+<div class="container mt-5">
+    <div class="row justify-content-center">
+        <div class="col-md-6">
+            <div class="card">
+                <div class="card-header">
+                    <h2 class="text-center">Inscription</h2>
+                </div>
+                <div class="card-body">
+                    {{ form_start(registrationForm, {'method': 'POST', 'attr': {'data-turbo': 'false'}}) }}
+                    {{ form_widget(registrationForm) }}
+                    <div class="d-grid">
+                        <button type="submit" class="btn btn-primary">S'inscrire</button>
+                    </div>
+                    {{ form_end(registrationForm) }}
+                </div>
+            </div>
+            <div class="text-center mt-3">
+                <a href="{{ path('app_login') }}" class="btn btn-link">Déjà inscrit ? Se connecter</a>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

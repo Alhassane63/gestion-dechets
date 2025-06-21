@@ -1,0 +1,64 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Modifier Collecte{% endblock %}
+
+{% block body %}
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <h2>Modifier Collecte</h2>
+        <div>
+            <a href="{{ path('app_collecte_index') }}" class="btn btn-secondary me-2">
+                <i class="bi bi-arrow-left me-2"></i> Retour à la liste
+            </a>
+            <button type="button" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#deleteModal">
+                <i class="bi bi-trash me-2"></i> Supprimer
+            </button>
+        </div>
+    </div>
+
+    <div class="card">
+        <div class="card-body">
+            {{ form_start(form) }}
+            <div class="row">
+                <div class="col-md-6 mb-3">
+                    {{ form_label(form.dateCollecte) }}
+                    {{ form_widget(form.dateCollecte, {'attr': {'class': 'form-control'}}) }}
+                    {{ form_errors(form.dateCollecte) }}
+                </div>
+                <div class="col-md-6 mb-3">
+                    {{ form_label(form.typeDechets) }}
+                    {{ form_widget(form.typeDechets, {'attr': {'class': 'form-control'}}) }}
+                    {{ form_errors(form.typeDechets) }}
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-6 mb-3">
+                    {{ form_label(form.statut) }}
+                    {{ form_widget(form.statut, {'attr': {'class': 'form-control'}}) }}
+                    {{ form_errors(form.statut) }}
+                </div>
+                <div class="col-md-6 mb-3">
+                    {{ form_label(form.zone) }}
+                    {{ form_widget(form.zone, {'attr': {'class': 'form-control'}}) }}
+                    {{ form_errors(form.zone) }}
+                </div>
+                {{ form_errors(form.typeDechets) }}
+            </div>
+            <div class="mb-3">
+                {{ form_label(form.statut) }}
+                {{ form_widget(form.statut, {'attr': {'class': 'form-control'}}) }}
+                {{ form_errors(form.statut) }}
+            </div>
+            <div class="mb-3">
+                {{ form_label(form.zone) }}
+                {{ form_widget(form.zone, {'attr': {'class': 'form-control'}}) }}
+                {{ form_errors(form.zone) }}
+            </div>
+            <div class="mb-3">
+                {{ form_widget(form.submit, {'attr': {'class': 'btn btn-primary'}}) }}
+                <a href="{{ path('app_collecte_index') }}" class="btn btn-secondary">Annuler</a>
+            </div>
+            {{ form_end(form) }}
+        </div>
+    </div>
+</div>
+{% endblock %}

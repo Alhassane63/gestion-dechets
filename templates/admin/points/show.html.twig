@@ -1,0 +1,60 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Détails du Point de Collecte{% endblock %}
+
+{% block body %}
+<div class="container-fluid">
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <h1>Détails du Point de Collecte</h1>
+        <div>
+            <a href="{{ path('app_admin_points') }}" class="btn btn-secondary">Retour à la liste</a>
+            <a href="{{ path('app_point_collecte_edit', {'id': point.id}) }}" class="btn btn-warning">Modifier</a>
+        </div>
+    </div>
+
+    <div class="card shadow mb-4">
+        <div class="card-body">
+            <div class="row">
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label>Adresse</label>
+                        <p class="form-control-plaintext">{{ point.adresse }}</p>
+                    </div>
+
+                    <div class="form-group">
+                        <label>Type de Déchets</label>
+                        <p class="form-control-plaintext">{{ point.typeDechets }}</p>
+                    </div>
+
+                    <div class="form-group">
+                        <label>Référence</label>
+                        <p class="form-control-plaintext">{{ point.reference }}</p>
+                    </div>
+
+                    <div class="form-group">
+                        <label>Description</label>
+                        <p class="form-control-plaintext">{{ point.description }}</p>
+                    </div>
+                </div>
+
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label>Latitude</label>
+                        <p class="form-control-plaintext">{{ point.latitude }}</p>
+                    </div>
+
+                    <div class="form-group">
+                        <label>Longitude</label>
+                        <p class="form-control-plaintext">{{ point.longitude }}</p>
+                    </div>
+
+                    <div class="form-group">
+                        <label>Zone</label>
+                        <p class="form-control-plaintext">{{ point.zone.nom }}</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
